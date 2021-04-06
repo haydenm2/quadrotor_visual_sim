@@ -38,7 +38,17 @@ class camera:
             e_targets[:, i] = self.f/e_targets[2, i]*e_targets[:, i]*SENSOR.pixels_per_meter
         return e_targets[0:2, :] + np.array([[SENSOR.pixel_width/2], [SENSOR.pixel_height/2]])
 
+    def get_target_depths(self):
+        R_ib = RotationVehicle2Body(self.orientation.item(0), self.orientation.item(1), self.orientation.item(2))
+        R_bc = np.array([[0, 1, 0],
+                         [-1, 0, 0],
+                         [0, 0, 1]])
+        R_ic = R_bc @ R_ib
+        p_t = R_ic @ (self.targets.get_targets() - self.position.reshape(-1, 1))
+        return p_t[2, :]
+
     def plot_desired_targets(self, desired_targets):
+        self.desired_targets = desired_targets
         self.image.plot(desired_targets[0], desired_targets[1], pen=None, symbol='+', symbolBrush=(255, 0, 0, 255))
 
     def show_image(self, ts):
@@ -47,3 +57,4 @@ class camera:
             self.time = 0
             p_t = self.get_target_pixels()
             self.image.plot(p_t[0], p_t[1], pen=None, symbol='o', symbolBrush=(0, 0, 255, 255))
+            self.plot_desired_targets(self.desired_targets)

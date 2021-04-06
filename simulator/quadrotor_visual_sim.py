@@ -57,7 +57,9 @@ while sim_time < SIM.end_time:
     estimated_state = obs.update(measurements, inputs.flatten() - CON.trim_input)
 
     #------------- controller -------------
-    inputs, commanded_state = ctrl.update(desired_state, estimated_state)
+    pts = cam.get_target_pixels()
+    pts_depth = cam.get_target_depths()
+    inputs, commanded_state = ctrl.update(desired_state, estimated_state, pts, pts_depth)
 
     #------------- system -------------
     quad.update_state(inputs)  # propagate the MAV dynamics
