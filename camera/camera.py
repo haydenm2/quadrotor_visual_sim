@@ -49,12 +49,16 @@ class camera:
 
     def plot_desired_targets(self, desired_targets):
         self.desired_targets = desired_targets
-        self.image.plot(desired_targets[0], desired_targets[1], pen=None, symbol='+', symbolBrush=(255, 0, 0, 255))
+        self.image.plot([desired_targets[0, 0], desired_targets[0, 0]], [desired_targets[1, 0], desired_targets[1, 0]], pen=None, symbol='+', symbolBrush=(0, 0, 0, 255))
+        self.image.plot([desired_targets[0, 1], desired_targets[0, 1]], [desired_targets[1, 1], desired_targets[1, 1]], pen=None, symbol='+', symbolBrush=(0, 0, 0, 255))
+        self.image.plot([desired_targets[0, 2], desired_targets[0, 2]], [desired_targets[1, 2], desired_targets[1, 2]], pen=None, symbol='+', symbolBrush=(0, 0, 0, 255))
 
     def show_image(self, ts):
         self.time += ts
         if self.time > SIM.ts_plotting:
             self.time = 0
             p_t = self.get_target_pixels()
-            self.image.plot(p_t[0], p_t[1], pen=None, symbol='o', symbolBrush=(0, 0, 255, 255))
+            self.image.plot([p_t[0, 0], p_t[0, 0]], [p_t[1, 0], p_t[1, 0]], pen=None, symbol='o', symbolBrush=(255, 0, 0, 255))
+            self.image.plot([p_t[0, 1], p_t[0, 1]], [p_t[1, 1], p_t[1, 1]], pen=None, symbol='o', symbolBrush=(0, 255, 0, 255))
+            self.image.plot([p_t[0, 2], p_t[0, 2]], [p_t[1, 2], p_t[1, 2]], pen=None, symbol='o', symbolBrush=(0, 0, 255, 255))
             self.plot_desired_targets(self.desired_targets)
